@@ -1,11 +1,16 @@
 import { Product } from '../interfaces/productsInterface';
-import * as productsModel from '../models/productsModel';
+import connection from '../models/connection';
+import ProductsModel from '../models/productsModel';
 
-const productsService = {
-  async create(product: Product) {
-    const data = await productsModel.create(product);
-    return { status: 201, data };
-  },
-};
+export default class ProductsService {
+  private model: ProductsModel;
 
-export default productsService;
+  constructor() {
+    this.model = new ProductsModel(connection);
+  }
+
+  public create = async (product: Product): Promise<Product> => {
+    const produto = await this.model.create(product);
+    return produto;
+  };
+}
